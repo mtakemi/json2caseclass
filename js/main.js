@@ -226,6 +226,7 @@ var generate_scala = function(el){
          return '  ' + sanitize_var_name(v.find('label.keyname').text()) + ': ' + sst;
       }, this);
       content += t.one_scala_cclass({cname:value.find('input.class_name').val(), ccontent: props.join(',\n')}) + '\n';
+      content += t.one_scala_companion_object({cname:value.find('input.class_name').val(), ccontent: props.join(',\n')}) + '\n';
    }, this);
    $('#caseclassform textarea').val(content);
    $('#mycodeis').html(t.scala_code({code:content}));
@@ -319,6 +320,7 @@ var t = {
          +'</fieldset>'
          +'</div>'),
    one_scala_cclass : _.template('case class <%= cname %>(\n<%= ccontent %>\n)'),
+   one_scala_companion_object : _.template('object  <%= cname %>{\n  implicit def jsonWrites = Json.writes[<%= cname %>]\n  implicit def jsonReads = Json.reads[<%= cname %>]\n}'),
    one_scala_props : _.template('<%= pname %>\:<%= ptype %>'),
    scala_code : _.template('<pre class="sh_scala"><%= code %></pre>')
 
